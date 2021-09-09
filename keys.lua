@@ -79,7 +79,7 @@ keys.globalkeys = gears.table.join(
     ),
 
     -- =========================================
-    -- VOLUME / BRIGHTNESS / SCREENSHOT
+    -- VOLUME / SPOTIFY / BRIGHTNESS / SCREENSHOT
     -- =========================================
 
     -- Brightness
@@ -89,7 +89,7 @@ keys.globalkeys = gears.table.join(
             if toggleBriOSD ~= nil then
                 toggleBriOSD(true)
             end
-            if UpdateBrOSD ~= nil then
+            if UpdateBriOSD ~= nil then
                 UpdateBriOSD()
             end
         end,
@@ -101,7 +101,7 @@ keys.globalkeys = gears.table.join(
             if toggleBriOSD ~= nil then
                 toggleBriOSD(true)
             end
-            if UpdateBrOSD ~= nil then
+            if UpdateBriOSD ~= nil then
                 UpdateBriOSD()
             end
         end,
@@ -110,6 +110,18 @@ keys.globalkeys = gears.table.join(
 
     -- ALSA volume control
     awful.key({modkey}, "v",
+        function()
+            awful.spawn('amixer -D pulse sset Master 5%+')
+            if toggleVolOSD ~= nil then
+                toggleVolOSD(true)
+            end
+            if UpdateVolOSD ~= nil then
+                UpdateVolOSD()
+            end
+        end,
+        {description = 'volume up', group = 'hotkeys'}
+    ),
+    awful.key({}, 'XF86AudioRaiseVolume',
         function()
             awful.spawn('amixer -D pulse sset Master 5%+')
             if toggleVolOSD ~= nil then
@@ -133,27 +145,47 @@ keys.globalkeys = gears.table.join(
         end,
         {description = 'volume down', group = 'hotkeys'}
     ),
+    awful.key({}, 'XF86AudioLowerVolume',
+        function()
+            awful.spawn('amixer -D pulse sset Master 5%-')
+            if toggleVolOSD ~= nil then
+                toggleVolOSD(true)
+            end
+            if UpdateVolOSD ~= nil then
+                UpdateVolOSD()
+            end
+        end,
+        {description = 'volume down', group = 'hotkeys'}
+    ),
     awful.key({modkey, "Shift"}, "b",
         function()
             awful.spawn('amixer -D pulse set Master 1+ toggle')
         end,
         {description = 'toggle mute', group = 'hotkeys'}
     ),
+    awful.key({}, 'XF86AudioMute',
+        function()
+            awful.spawn('amixer -D pulse set Master 1+ toggle')
+        end,
+        {description = 'toggle mute', group = 'hotkeys'}
+    ),
+
+    -- Spotify controls
     awful.key({modkey}, ".",
         function()
-            awful.spawn('mpc next')
+            awful.spawn('spt playback -n')
         end,
         {description = 'next music', group = 'hotkeys'}
     ),
     awful.key({modkey}, ",",
         function()
-            awful.spawn('mpc prev')
+            awful.spawn('spt playback -p')
         end,
         {description = 'previous music', group = 'hotkeys'}
     ),
     awful.key({modkey}, "/",
         function()
-            awful.spawn('mpc toggle')
+            awful.spawn('spt playback -t')
         end,
         {description = 'play/pause music', group = 'hotkeys'}
     ),

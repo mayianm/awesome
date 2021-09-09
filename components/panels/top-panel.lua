@@ -153,7 +153,7 @@ local TopPanel = function(s)
       require('widgets.package-updater'),
       --require('widgets.bluetooth'),
       require('widgets.wifi'),
-      require('widgets.battery'),
+      --require('widgets.battery'),
       require("widgets.layout-box")
     }
   }
