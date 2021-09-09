@@ -85,7 +85,7 @@ keys.globalkeys = gears.table.join(
     -- Brightness
     awful.key({}, 'XF86MonBrightnessUp',
         function()
-            awful.spawn('xbacklight -inc 10')
+            awful.spawn('light -s sysfs/backlight/intel_backlight -A 10')
             if toggleBriOSD ~= nil then
                 toggleBriOSD(true)
             end
@@ -97,7 +97,7 @@ keys.globalkeys = gears.table.join(
     ),
     awful.key({}, 'XF86MonBrightnessDown',
         function()
-            awful.spawn('xbacklight -dec 10')
+            awful.spawn('light -s sysfs/backlight/intel_backlight -U 10')
             if toggleBriOSD ~= nil then
                 toggleBriOSD(true)
             end
