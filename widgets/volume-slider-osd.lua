@@ -1,4 +1,3 @@
-
 local wibox = require('wibox')
 local mat_list_item = require('widgets.list-item')
 local mat_slider = require('widgets.slider')
