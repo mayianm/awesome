@@ -10,13 +10,43 @@
 
 ;; Add all desired packages
 (require 'package)
+
+;; Follow hardening instructions at https://glyph.twistedmatrix.com/2015/11/editor-malware.html
+;; Use https for packages
+(setq package-archives
+      '(("gnu" . "https://elpa.gnu.org/packages/")
+        ("melpa" . "https://melpa.org/packages/")))
+
+;; Always check certificates!
+(setq tls-checktrust t)
+;; Set trust roots
+(let ((trustfile
+       (replace-regexp-in-string
+        "\\\\" "/"
+        (replace-regexp-in-string
+         "\n" ""
+         (shell-command-to-string "python -m certifi")))))
+  (setq tls-program
+        (list
+         (format "gnutls-cli%s --x509cafile %s -p %%p %%h"
+                 (if (eq window-system 'w32) ".exe" "") trustfile)))
+  (setq gnutls-verify-error t)
+  (setq gnutls-trustfiles (list trustfile)))
+
+;; Initialise packages now
+(setq package-enable-at-startup nil)
 (package-initialize)
 
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-
+;; Ensure that use-package is installed
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
+
+(eval-when-compile
+  (require 'use-package))
+
+;; Ensure that all packages are actually installed
+(setq use-package-always-ensure t)
 
 ;; Desired theme
 (tool-bar-mode -1)
@@ -76,10 +106,15 @@
          (c-mode . lsp)
          (c++-mode . lsp)
          (python-mode . lsp)
+         (f90-mode . lsp)
          )
   :commands (lsp lsp-deferred)
   :config
-  (lsp-enable-which-key-integration t))
+  (lsp-enable-which-key-integration t)
+  ())
+
+;; UI for lsp-mode
+(use-package lsp-ui :commands lsp-ui-mode)
 
 ;; Front end for auto completions
 (use-package company
