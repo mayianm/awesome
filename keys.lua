@@ -18,6 +18,9 @@ local naughty = require("naughty")
 -- Default Applications
 local apps = require("apps");
 
+-- StreetTurtle widgets
+local logout_popup = require("awesome-wm-widgets.logout-popup-widget.logout-popup")
+
 -- Define mod key
 local modkey = "Mod4"
 local altkey = "Mod1"
@@ -299,7 +302,8 @@ keys.globalkeys = gears.table.join(
     -- Quit Awesome
     awful.key({ modkey }, "Escape",
         function()
-            exit_screen_show()
+            logout_popup.launch()
+            -- exit_screen_show()
         end,
         {description = "quit awesome", group = "awesome"}
     ),
